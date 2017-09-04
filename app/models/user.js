@@ -39,7 +39,7 @@ user_Schema = new Schema({
 	workout          : String,
 	high_blood : String,
 	
-	level      : { type : Number, min : 1, default : 0 },
+	level      : { type : Number, min : 0, default : 0 },
 	audit      : { type : Boolean, default : false },	// 审核
 	msgNum     : { type : Number, default : 1}, 	// 通知次数
 	CreateTime : { type : Date, default : Date.now }
