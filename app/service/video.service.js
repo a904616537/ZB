@@ -46,8 +46,7 @@ module.exports = {
 	},
 
 	getForLevel(level, callback) {
-		console.log('level', level)
-		let query = {level : {$ne : 0, $lte : parseInt(level)}};
+		let query = {level : {$ne : 0, $lte : parseInt(level) + 1}};
 		video_mongo.find(query, (err, doc) => callback(doc))
 	},
 

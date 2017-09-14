@@ -1,34 +1,32 @@
 /*
  * Author: Kain·Altion <kain@foowala.com>
- * Module description: 视频
+ * Module description: 图片
  */
 
 'use strict';
 
 var mongoose   = require('mongoose'),
 Schema         = mongoose.Schema,
-video_Schema = new Schema({
-	path       : String,
+picture_Schema = new Schema({
 	img        : String,
 	name       : String,
-	level      : {type : Number, default : 4},
-	courses    : { type : Schema.Types.ObjectId, ref : 'courses'},
+	SmallPic   : [String],
 	order      : {type : Number, default : 10},
 	CreateTime : {type : Date, default : Date.now }
 });
 
-video_Schema.virtual('date').get(() => {
+picture_Schema.virtual('date').get(() => {
   this._id.getTimestamp();
 });
 
-video_Schema.statics = {
+picture_Schema.statics = {
 	findById(_id, callback) {
 		this.findOne({_id})
 		.exec(callback);
 	}
 }
 
-mongoose.model('video', video_Schema, 'video');
+mongoose.model('picture', picture_Schema, 'picture');
 
 
 

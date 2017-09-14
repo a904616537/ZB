@@ -10,7 +10,7 @@ Schema         = mongoose.Schema,
 courses_Schema = new Schema({
 	img        : String,	// 封面
 	name       : String,	// 课程名称
-	order      : {type : Number, default : 0},	// 课程排序
+	order      : {type : Number, default : 10},	// 课程排序
 	CreateTime : {type : Date, default : Date.now }	// 创建时间
 });
 
