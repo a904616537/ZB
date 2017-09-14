@@ -36,14 +36,20 @@ module.exports = {
 			video_mongo.findById(video._id, (err, doc) => {
 				if (err) return reject(err);
 				doc[video.key] = video.value;
+				console.log('key', doc)
 				doc.save(err => {
+					console.log('error', doc);
 					if(err) return reject(err)
-					resolve(video);
+					resolve(doc);
 				})
 			})
 		})
 	},
 
+	getForLevel(level, callback) {
+		let query = {level : {$ne : 0, $lte : parseInt(level) + 1}};
+		video_mongo.find(query, (err, doc) => callback(doc))
+	},
 
 	SelectById(_id) {
 		return new Promise((resolve, reject) => {

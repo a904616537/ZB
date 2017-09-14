@@ -1,6 +1,6 @@
 /*
  * Author: Kain·Altion <kain@foowala.com>
- * Module description: user mongoose
+ * Module description: 视频
  */
 
 'use strict';
@@ -11,9 +11,9 @@ video_Schema = new Schema({
 	path       : String,
 	img        : String,
 	name       : String,
-	level      : {type : Number, default : 4, max : 4, min : 0},
+	level      : {type : Number, default : 4},
+	courses    : { type : Schema.Types.ObjectId, ref : 'courses'},
 	order      : {type : Number, default : 0},
-	grade      : {type : Number, default : 0, min : 0},
 	CreateTime : {type : Date, default : Date.now }
 });
 
