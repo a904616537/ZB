@@ -67,7 +67,7 @@ const config = {
 			pass    : 'Znbfitness2017',
 			port    : 25
 		},
-		mongo : 'mongodb://127.0.0.1:27017/ZB',
+		mongo : 'mongodb://localhost:27017/ZB',
 		main  : {
 			languagePath : rootPath + '/language/'
 		},
