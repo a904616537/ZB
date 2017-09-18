@@ -59,7 +59,7 @@ const config = {
 		maxOrderTime : 1080,
 		app          : {
 			name : 'ZB',
-			local: 'http://localhost:9080'
+			local: 'http://www.mybarrefitness.com'
 		},
 		mailer : {
 			email   : 'postmaster@mybarrefitness.com',
