@@ -20,6 +20,6 @@ var db,
 console.log('mongodb config:', mongodb_cfg);
 
 mongoose.Promise = global.Promise
-mongoose.connect(mongodb_cfg, connectOpen, connectError);
+mongoose.connect(mongodb_cfg, {useMongoClient: true});
 
 module.exports = db;
