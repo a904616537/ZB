@@ -48,7 +48,7 @@ module.exports = {
 
 	getForLevel(level, callback) {
 		let query = {level : {$ne : 0, $lte : parseInt(level) + 1}};
-		video_mongo.find(query, (err, doc) => callback(doc))
+		video_mongo.find(query, (err, doc) => callback(doc)).sort({order: 1, CreateTime : -1});
 	},
 
 	SelectById(_id) {
@@ -83,10 +83,9 @@ module.exports = {
 		return new Promise((resolve, reject) => {
 			let query = {level : {$ne : 0, $lte : parseInt(level) + 1}};
 			if(level == 0) query = {level : 0};
-			console.log('level', query)
 
 			video_mongo.find(query)
-			.sort({level : 1, CreateTime : -1})
+			.sort({level : 1, order: 1, CreateTime : -1})
 			.exec((err, doc) => {
 				if (err) return reject(err);
 				return resolve(doc);
