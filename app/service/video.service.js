@@ -12,16 +12,17 @@ video_mongo  = mongoose.model('video');
 
 module.exports = {
 	// 获取用户
-	getList(page = 1, size = 1, sort = 'CreateTime|asc', callback) {
+	getList(page = 1, size = 1, sort = 'CreateTime|desc', callback) {
 		video_mongo.count({})
 		.exec((err, count) => {
 			let start = (page - 1) * size;
 			let query = video_mongo.find({})
 			query.limit(size)
 			query.skip(start)
+			query.sort({order: 1, CreateTime : -1});
 			if(sort && sort != '') {
 				sort = sort.split("|")
-				if(sort[1] == 'asc') sort = sort[0]
+				if(sort[1] == 'desc') sort = sort[0]
 				else sort = '-' + sort[0]
 				query.sort(sort)
 			}
