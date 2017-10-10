@@ -126,7 +126,7 @@ module.exports = {
 							if(err) return reject(err);
 							console.log('执行邮件发送')
 							console.log('user', user)
-							email_help.send(user.email, password, err => {
+							email_help.send(user, user.email, password, err => {
 								console.error(err);
 							})
 							resolve();
