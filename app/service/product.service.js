@@ -7,16 +7,15 @@
 const config = require('../../setting/config'),
 mongoose     = require('mongoose'),
 moment       = require('moment'),
-video_mongo  = mongoose.model('video');
+product_mongo  = mongoose.model('product');
 
 
 module.exports = {
-	// 获取用户
-	getList(page = 1, size = 1, sort = 'CreateTime|desc', callback) {
-		video_mongo.count({})
+	getList(page = 1, size = 10, sort = 'CreateTime|desc', callback) {
+		product_mongo.count({})
 		.exec((err, count) => {
 			let start = (page - 1) * size;
-			let query = video_mongo.find({})
+			let query = product_mongo.find({})
 			query.limit(size)
 			query.skip(start)
 			query.sort({order: 1, CreateTime : -1});
@@ -26,17 +25,28 @@ module.exports = {
 				else sort = '-' + sort[0]
 				query.sort(sort)
 			}
-			query.exec((err, users) => {
-				return callback(users, count)
+			query.exec((err, products) => {
+				return callback(products, count)
 			})
 		})
 	},
-	
-	Update(video) {
+	Editor(product) {
 		return new Promise((resolve, reject) => {
-			video_mongo.findById(video._id, (err, doc) => {
+			const _id = product._id;
+			delete product._id;
+			product_mongo.update({_id}, {...product})
+			.exec((err, doc) => {
+				console.log('error', doc);
+				if(err) return reject(err)
+				resolve(doc);
+			})
+		})
+	},
+	Update(product) {
+		return new Promise((resolve, reject) => {
+			product_mongo.findById(product._id, (err, doc) => {
 				if (err) return reject(err);
-				doc[video.key] = video.value;
+				doc[product.key] = product.value;
 				doc.save(err => {
 					console.log('error', doc);
 					if(err) return reject(err)
@@ -45,36 +55,52 @@ module.exports = {
 			})
 		})
 	},
+	UpdateImg(product) {
+		return new Promise((resolve, reject) => {
+			product_mongo.findById(product._id, (err, doc) => {
+				if (err) return reject(err);
+				doc.img = doc.img.map(val => {
+					if(val._id == product.img_id) val.def = true;
+					else val.def = false;
+					return val;
+				});
 
+				doc.save(err => {
+					if(err) return reject(err)
+					resolve(doc);
+				})
+			})
+		})
+	},
 	getForLevel(level, callback) {
 		let query = {level : {$ne : 0, $lte : parseInt(level) + 1}};
-		video_mongo.find(query, (err, doc) => callback(doc)).sort({order: 1, CreateTime : -1});
+		product_mongo.find(query, (err, doc) => callback(doc)).sort({order: 1, CreateTime : -1});
 	},
 
 	SelectById(_id) {
 		return new Promise((resolve, reject) => {
-			video_mongo.findById(_id, (err, doc) => {
+			product_mongo.findById(_id)
+			.exec((err, doc) => {
 				if (err) return reject(err);
 				resolve(doc);
 			})
-			
         })
 	},
-	Inset(video) {
+	Inset(product) {
 		return new Promise((resolve, reject) => {
-			video_mongo.create(video, err => {
+			product_mongo.create(product, err => {
 				if(err) return reject(err);
 				else return resolve();
 			})
 		})
 	},
-	Delete(video) {
+	Delete(product) {
 		return new Promise((resolve, reject) => {
-			video_mongo.findById(video._id, (err, doc) => {
+			product_mongo.findById(product._id, (err, doc) => {
 				if (err) return reject(err);
 				doc.remove(err => {
 					if(err) return reject(err)
-					resolve(video);
+					resolve(product);
 				})
 			})
 		})	
@@ -84,7 +110,7 @@ module.exports = {
 			let query = {level : {$ne : 0, $lte : parseInt(level) + 1}};
 			if(level == 0) query = {level : 0};
 
-			video_mongo.find(query)
+			product_mongo.find(query)
 			.sort({level : 1, order: 1, CreateTime : -1})
 			.exec((err, doc) => {
 				if (err) return reject(err);

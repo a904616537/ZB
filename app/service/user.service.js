@@ -30,6 +30,10 @@ module.exports = {
 			let query = user_mongo.find({})
 			query.limit(size)
 			query.skip(start)
+			query.populate({
+				path     : 'videos',
+				model    : 'video'
+			})
 			if(sort && sort != '') {
 				sort = sort.split("|")
 				if(sort[1] == 'asc') sort = sort[0]
@@ -50,6 +54,32 @@ module.exports = {
 					resolve(user);
 				})
 			}
+		})
+	},
+
+	UpdatePwd(_id, pwd, newpwd) {
+		return new Promise((resolve, reject) => {
+			user_mongo.findOne({_id})
+			.exec((err, user) => {
+				if(user) {
+					// 验证密码
+					encryption.decipher(user.password, user.key, modelpwd => {
+						console.log('modelpwd == pwd', modelpwd , pwd)
+						if(modelpwd == pwd) {
+							// 验证成功，更新密码
+							encryption.cipher(newpwd, (user_pwd, key) => {
+								user.password = user_pwd;
+								user.key = key;
+								user.save(err => {
+									if(err) reject('Password update failed!');
+									else resolve();
+								})
+							});
+							
+						} else reject('The original password is incorrect!');
+					})
+				} else reject("Users don't exist!")
+			})
 		})
 	},
 
@@ -79,6 +109,24 @@ module.exports = {
 						return reject();
 					})
 				} else return reject();
+			})
+        })
+	},
+	setUserVideo(user_id, video_id) {
+		return new Promise((resolve, reject) => {
+			user_mongo.findOne({_id : user_id})
+			.exec((err, user) => {
+				if (err) return reject(err);
+				const video = user.videos.find(v => v.toString() == video_id.toString());
+				if(video) {
+					console.log(moment(), '下载视频，已经下载', video_id, user_id)
+					resolve();
+				}
+				else {
+					console.log(moment(), '下载视频记录', video_id, user_id)
+					user.videos.push(video_id);
+					user.save(err => resolve())
+				}
 			})
         })
 	},

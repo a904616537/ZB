@@ -4,11 +4,12 @@
 
 'use strict';
 
-var express   = require('express'),
-service       = require('../service/video.service'),
-help          = require('../helper/page.help.js'),
-moment        = require('moment'),
-router        = express.Router();
+var express  = require('express'),
+service      = require('../service/video.service'),
+user_service = require('../service/user.service'),
+help         = require('../helper/page.help.js'),
+moment       = require('moment'),
+router       = express.Router();
 
 
 router.route('/')
@@ -32,7 +33,6 @@ router.route('/')
 })
 .put((req, res) => {
 	const video = req.body;
-	console.log('req.body', video)
 	service.Update(video)
 	.then(result => res.send({status : true}))
 	.catch(err => { 
@@ -48,6 +48,30 @@ router.route('/')
 		console.error('err', err);
 		res.send({status : false})
 	})
+})
+
+router.route('/download')
+.get((req, res) => {
+	const {video, user_id} = req.query;
+	console.log('video', video)
+	service.SelectById(video)
+	.then(v => {
+		if(!v) {
+			res.send({status : false, msg : '文件不存在！'});
+			return;
+		}
+
+
+		user_service.setUserVideo(user_id, v._id)
+		.then(() => {})
+
+		const filename = v.path.split('/').pop(),
+			suffix     = filename.split('.').pop(),
+			// url        = 'http://image.mybarrefitness.com/download';
+			url        = 'http://localhost:8082/download';
+		res.redirect(url + '?path=' + filename + '&name=' + v.name + '.' + suffix);
+	})
+	.catch(err => res.send({status : false, err}))
 })
 
 router.route('/level/:level')

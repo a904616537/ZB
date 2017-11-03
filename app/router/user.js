@@ -8,10 +8,24 @@
 var express   = require('express'),
 service       = require('../service/user.service'),
 help          = require('../helper/page.help.js'),
+wechat        = require('../../setting/config.js').wechat,
+Payment       = require('wechat-pay').Payment,
+ip            = require('ip'),
 moment        = require('moment'),
 jwt           = require('jwt-simple'),
 router        = express.Router();
 
+
+const payinfo = wechat.pay;
+const initConfig = {
+	partnerKey : payinfo.partnerKey,
+	appId      : payinfo.appId,
+	mchId      : payinfo.mchId,
+	notifyUrl  : payinfo.notifyUrl, //微信商户平台API密钥 
+	pfx        : payinfo.pfx, //微信商户平台证书 
+};
+
+const payment = new Payment(initConfig);
 
 router.route('/user')
 .get((req, res) => {
@@ -24,7 +38,12 @@ router.route('/user')
 	})
 })
 .put((req, res) => {
-	res.send('put user');
+	let { user_id, old_pwd, newpwd } = req.body;
+	console.log('put user', req.body)
+
+	service.UpdatePwd(user_id, old_pwd, newpwd)
+	.then(() => res.send({status : true}))
+	.catch(err => res.send({status : false, err}))
 })
 
 router.route('/user/level/:_id')
@@ -87,6 +106,29 @@ router.route('/register')
 	service.Register(user)
 	.then(result => res.send({status : true}))
 	.catch(err =>{ console.error('err', err); res.send({status : false})})
+})
+
+router.route('/payment')
+.get((req, res) => {
+	let str = "" + moment().unix(),
+        pad = "000000000",
+        order = moment().format("YYYY") + moment().format("MM") + pad.substring(0, pad.length - str.length) + str;
+
+	const body = {
+		body             : 'Eatis',
+		out_trade_no     : order + '_' + Math.random().toString().substr(2, 10),
+		// total_fee        : total,
+		total_fee        : 10,
+		spbill_create_ip : ip.address(),
+		trade_type       : 'NATIVE',
+		product_id       : order
+	};
+
+	payment.getBrandWCPayRequestParams(body, (err, payargs) => {
+		console.log(moment(), '扫码支付调用', payargs);
+		res.json(payargs);
+	});
+
 })
 
 module.exports = app => {

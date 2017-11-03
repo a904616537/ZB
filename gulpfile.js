@@ -6,25 +6,21 @@
 
 
 const gulp = require('gulp'),
-server     = require('gulp-express');
+nodemon    = require('gulp-nodemon');
 
-// 监听文件变化任务
-gulp.task("watch", function(){
-    gulp.watch(['app/**/*.js', 'app/**/*.service.js', 'setting/*.js'], server.notify)
-    .on('error', err => {
-        console.log('app router gulp', err)
-        gutil.log('app Error!', err.message);
-        this.end();
-    });
+gulp.task('develop',  () => {
+    nodemon({
+        script : 'index.js',
+        ext    : 'html js',
+        ignore : ['ignored.js']
+    }).on('restart', () => {
+        console.log('restarted!')
+    })
 })
 
-gulp.task('server', () => {
-	console.log('---> 开启服务')
-    // 启动express服务器
-    server.run(['index.js']);
-    
-	//  监听文件，改变时重启服务器
-    gulp.watch(['app/**/*.js', 'setting/*.js' ], [server.run])
+gulp.task('server',['develop'], () => {
+    console.log('reload!')
+    gulp.watch(['app/**/*.js','*.js']);
 })
 
-gulp.task('default', ['server', 'watch']);
+gulp.task('default', ['server']);

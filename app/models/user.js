@@ -25,23 +25,25 @@ user_Schema = new Schema({
 	manager        : String,
 	motivation1    : String, 
 	motivation2    : String,
-	experience     : [{
+	experience     : [{		// 经验
 		discipline : String,
 		level      : String,
 		years      : String
 	}],
-	bellet              : String,
-	share_experience    : String,
-	isvpn               : String,
-	music : String,
-	QQ                  : String,
-	heart_condition     : String,
+	bellet           : String,
+	share_experience : String,
+	isvpn            : String,
+	music            : String,
+	QQ               : String,
+	heart_condition  : String,
 	workout          : String,
-	high_blood : String,
+	high_blood       : String,
 	
+	videos     : [{type : Schema.Types.ObjectId, ref : 'video'}],	// 下载视频记录
 	level      : { type : Number, min : 0, default : 0 },
 	audit      : { type : Boolean, default : false },	// 审核
-	msgNum     : { type : Number, default : 1}, 	// 通知次数
+	msgNum     : { type : Number, default : 1}, 		// 通知次数
+	is_payment : { type : Boolean, default : false },	//付钱了没
 	CreateTime : { type : Date, default : Date.now }
 });
 

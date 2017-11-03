@@ -27,6 +27,16 @@ const config = {
 		cookie : {
 			secret      : 'ZB',
 			sessionName : 'session'
+		},
+		wechat : {
+			// Kain 的测试公众号
+			pay : {
+				partnerKey : "<partnerkey>",
+				appId      : "<appid>",
+				mchId      : "<mchid>",
+				notifyUrl  : "<notifyurl>",
+				// pfx        : fs.readFileSync(rootPath + '/setting/apiclient_cert.p12')
+			}
 		}
 	},
 	test: {
@@ -74,6 +84,16 @@ const config = {
 		cookie : {
 			secret      : 'ZB',
 			sessionName : 'session'
+		},
+		wechat : {
+			// Kain 的测试公众号
+			pay : {
+				partnerKey : "<partnerkey>",
+				appId      : "<appid>",
+				mchId      : "<mchid>",
+				notifyUrl  : "<notifyurl>",
+				// pfx        : fs.readFileSync(rootPath + '/setting/apiclient_cert.p12')
+			}
 		}
 	}
 }
