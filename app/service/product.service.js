@@ -34,7 +34,7 @@ module.exports = {
 		return new Promise((resolve, reject) => {
 			const _id = product._id;
 			delete product._id;
-			product_mongo.update({_id}, {...product})
+			product_mongo.update({_id}, product)
 			.exec((err, doc) => {
 				console.log('error', doc);
 				if(err) return reject(err)
