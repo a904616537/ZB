@@ -28,19 +28,15 @@ const middleware = require('wechat-pay').middleware;
 
 router.route('/sweep')
 .post((req, res) => {
-	const {total} = req.body;
-	var str = "" + moment().unix(),
-    pad = "000000000",
-    _id = moment().format("YYYY") + moment().format("MM") + pad.substring(0, pad.length - str.length) + str;
-
+	const {total, order} = req.body;
+	console.log('req.body', req.body)
 	const body = {
 		body             : 'MYbarre',
-		out_trade_no     : _id + '_' + Math.random().toString().substr(2, 10),
-		// total_fee        : total,
-		total_fee        : 10,
+		out_trade_no     : order + '_' + Math.random().toString().substr(2, 10),
+		total_fee        : total,
 		spbill_create_ip : ip.address(),
 		trade_type       : 'NATIVE',
-		product_id       : _id
+		product_id       : order
 	};
 
 	payment.getBrandWCPayRequestParams(body, (err, payargs) => {
