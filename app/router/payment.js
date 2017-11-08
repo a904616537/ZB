@@ -51,9 +51,9 @@ router.route('/sweep')
 router.use('/notify', middleware(initConfig).getNotify().done((message, req, res, next) => {
 	var openid = message.openid,
 	order_id   = message.out_trade_no.split("_", 1),
-	user_id    = message.attach,
-	attach     = {};
-	console.log('payment message', message)
+	user_id    = message.attach;
+
+	console.log('payment message user', user_id)
 	console.log(moment(), 'wechat payment notify order id:', order_id)
 	user_service.UpdatePayment(user_id)
 	.then(() => console.log(moment(), 'user payment', user_id))
