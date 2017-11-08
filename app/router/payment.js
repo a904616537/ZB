@@ -28,7 +28,7 @@ const middleware = require('wechat-pay').middleware;
 
 router.route('/sweep')
 .post((req, res) => {
-	const {total, order} = req.body;
+	const {total, order, user} = req.body;
 	console.log('req.body', req.body)
 	const body = {
 		body             : 'MYbarre',
@@ -50,6 +50,7 @@ router.use('/notify', middleware(initConfig).getNotify().done((message, req, res
 	var openid = message.openid,
 	order_id   = message.out_trade_no.split("_", 1),
 	attach     = {};
+	console.log('payment message', message)
 	try{
 		attach = JSON.parse(message.attach);
 		console.log(moment(), 'notify message', message)

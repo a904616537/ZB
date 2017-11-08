@@ -46,7 +46,37 @@ const help = {
 			} else callback()
 			console.log('发送成功', info.response);
 		})
+	},
+	order_email : (user, address, product_item, callback) => {
+		const mailOptions = {
+			from    : 'MYbarre<info@mybarrefitness.com>', // 发送者
+			to      : 'kain@foowala.com', // 发邮件给自己
+			subject : '你有新的订单！', // 标题
+			text    : '你有新的订单！', // 文本
+			html    : template_email(user, address, product_item)
+		}
+		console.log('邮件发送开始 ----')
+		transporter.sendMail(mailOptions, (err, info) => {
+			console.log('info', info);
+			if (err) {
+				console.error('err', err)
+				callback(err)
+				return;
+			} else callback()
+			console.log('发送成功', info.response);
+		})
 	}
+}
+
+const template_email = (user, address, product_item) => {
+	const str = '';
+	product_item.map(val => {
+		str += '<p>' + JSON.stringify(val) + '</p>'
+		return val;
+	})
+	return '<p>user : ' + JSON.stringify(user) + '</p>'
+	+ '<p>' + JSON.stringify(address) + '</p>'
+	+ str
 }
 
 const template = (user, email, password) => { return '<p>Dear ' + user.first_name + '</p>'
