@@ -19,9 +19,9 @@ router.route('/')
 })
 .put((req, res) => {
 	const item = {
-		operation : req.body.operation,
-		item_id   : req.body._id,
-		user      : req.body.user
+		number  : req.body.number,
+		item_id : req.body._id,
+		user    : req.body.user
 	};
 
 	console.log('put cart item for product', item);
@@ -31,14 +31,7 @@ router.route('/')
 			return value._id == item.item_id
 		})
 		let product = cart_item.product;
-		switch(item.operation) {
-			case 'add' :
-				cart_item.number += 1;
-			break;
-			case 'subtract' :
-				cart_item.number -= 1;
-			break;
-		}
+		cart_item.number = item.number;
 		
 		service.Update(cart)
 		.then(() => res.send({status : true}))
