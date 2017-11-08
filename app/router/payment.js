@@ -5,12 +5,13 @@
 
 'use strict';
 
-var express = require('express'),
-router      = express.Router(),
-moment      = require('moment'),
-ip          = require('ip'),
-wechat      = require('../../setting/config.js').wechat,
-Payment     = require('wechat-pay').Payment;
+var express  = require('express'),
+router       = express.Router(),
+moment       = require('moment'),
+ip           = require('ip'),
+user_service = require('../service/user.service'),
+wechat       = require('../../setting/config.js').wechat,
+Payment      = require('wechat-pay').Payment;
 
 
 const payinfo = wechat.pay;
@@ -32,7 +33,7 @@ router.route('/sweep')
 	console.log('req.body', req.body)
 	const body = {
 		body             : 'MYbarre',
-		out_trade_no     : order + '_' + Math.random().toString().substr(2, 10),
+		out_trade_no     : order + '_' + user + '_' + Math.random().toString().substr(2, 10),
 		total_fee        : total,
 		spbill_create_ip : ip.address(),
 		trade_type       : 'NATIVE',
@@ -48,7 +49,8 @@ router.route('/sweep')
 
 router.use('/notify', middleware(initConfig).getNotify().done((message, req, res, next) => {
 	var openid = message.openid,
-	order_id   = message.out_trade_no.split("_", 1),
+	order_id   = message.out_trade_no.split("_", 1)[0],
+	user_id    = message.out_trade_no.split("_", 2)[0],
 	attach     = {};
 	console.log('payment message', message)
 	try{
@@ -56,6 +58,9 @@ router.use('/notify', middleware(initConfig).getNotify().done((message, req, res
 		console.log(moment(), 'notify message', message)
 	}catch(e) {}
 	console.log(moment(), 'wechat payment notify order id:', order_id)
+	user_service.UpdatePayment(user_id)
+	.then(() => console.log(moment(), 'user payment', user_id))
+	.catch(err => console.log('err', err))
 	socket.emit('wechatPay', {
 		status       : true,
 		order_id     : order_id,

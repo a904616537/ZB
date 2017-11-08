@@ -82,7 +82,20 @@ module.exports = {
 			})
 		})
 	},
-
+	UpdatePayment(_id) {
+		return new Promise((resolve, reject) => {
+			user_mongo.findOne({_id})
+			.exec((err, user) => {
+				if(user) {
+					user.is_payment = true;
+					user.save(err => {
+						if(err) reject(err)
+						else resolve();
+					})
+				} else reject("Users don't exist!")
+			})
+		})
+	},
 
 	SelectById(_id) {
 		return new Promise((resolve, reject) => {
