@@ -33,7 +33,8 @@ router.route('/sweep')
 	console.log('req.body', req.body)
 	const body = {
 		body             : 'MYbarre',
-		out_trade_no     : order + '_' + user + '_' + Math.random().toString().substr(2, 10),
+		attach           : user,
+		out_trade_no     : order + '_' + Math.random().toString().substr(2, 10),
 		total_fee        : total,
 		spbill_create_ip : ip.address(),
 		trade_type       : 'NATIVE',
@@ -49,14 +50,10 @@ router.route('/sweep')
 
 router.use('/notify', middleware(initConfig).getNotify().done((message, req, res, next) => {
 	var openid = message.openid,
-	order_id   = message.out_trade_no.split("_", 1)[0],
-	user_id    = message.out_trade_no.split("_", 2)[0],
+	order_id   = message.out_trade_no.split("_", 1),
+	user_id    = message.attach,
 	attach     = {};
 	console.log('payment message', message)
-	try{
-		attach = JSON.parse(message.attach);
-		console.log(moment(), 'notify message', message)
-	}catch(e) {}
 	console.log(moment(), 'wechat payment notify order id:', order_id)
 	user_service.UpdatePayment(user_id)
 	.then(() => console.log(moment(), 'user payment', user_id))
