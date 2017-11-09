@@ -122,9 +122,11 @@ module.exports = {
 					// 合计
 				], err => {
 					// 绑定下单人数据主键，方便查询
+					order.status = false;
+					order.user   = user._id;
+					order.total  = total;
 					console.log(moment(), '下单金额：', order._id, order.total)
-					order.status          = 1;
-					order.user            = user._id;
+					console.log('order', order)
 
 					order_mongo.create(order, (err, doc) => {
 						if(err) {
@@ -137,7 +139,6 @@ module.exports = {
 							// 生成订单未出错则通知清空购物车！
 							clearNext();
 							resolve(order);
-							next();
 						}
 					})
 				});

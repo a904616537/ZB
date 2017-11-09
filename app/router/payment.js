@@ -55,7 +55,7 @@ router.use('/notify', middleware(initConfig).getNotify().done((message, req, res
 
 	console.log('payment message user', user_id)
 	console.log(moment(), 'wechat payment notify order id:', order_id)
-	user_service.UpdatePayment(user_id)
+	user_service.UpdatePayment(user_id, true)
 	.then(() => console.log(moment(), 'user payment', user_id))
 	.catch(err => console.log('err', err))
 	socket.emit('wechatPay', {

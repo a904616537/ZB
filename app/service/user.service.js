@@ -82,12 +82,12 @@ module.exports = {
 			})
 		})
 	},
-	UpdatePayment(_id) {
+	UpdatePayment(_id, is_payment) {
 		return new Promise((resolve, reject) => {
 			user_mongo.findOne({_id})
 			.exec((err, user) => {
 				if(user) {
-					user.is_payment = true;
+					user.is_payment = is_payment;
 					user.save(err => {
 						if(err) reject(err)
 						else resolve();

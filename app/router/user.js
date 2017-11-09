@@ -79,6 +79,14 @@ router.route('/user/audit')
 	.catch(err => res.send({status: false}))
 })
 
+router.route('/user/payment')
+.post((req, res) => {
+	const {_id, is_payment} = req.body;
+	service.UpdatePayment(_id, is_payment)
+	.then(() => res.send({status : true}))
+	.catch(err => res.send({status: false}))
+})
+
 
 router.route('/login')
 .post((req, res) => {

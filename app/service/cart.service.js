@@ -74,17 +74,18 @@ module.exports = {
 	Clear(user_id) {
 		const that = this;
 		return new Promise((resolve, reject) => {
+			
 			that.getCart(user_id)
 			.then(cart => {
-				cart.cart_item = [];
-				cart.save(err => {
-					if(err) {
-						console.log('清空购物车失败:', err)
-						reject();
+
+				resolve({cart_item: cart.cart_item, clearNext: () => {
+						cart.cart_item = [];
+						cart.save(err => {
+							if(err) console.log('清空购物车失败:', err)
+						})
 					}
-					else resolve()
-				})
-			});
+				});
+			})
 		})
 	}
 }

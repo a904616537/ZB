@@ -11,11 +11,8 @@ address_Scheam = new Schema({
 	recipients : String,
 	phone      : String,
 	email      : String,
-	province   : String,
-	city       : String,
-	district   : String,
 	address    : String,
-	remark     : String
+	type       : String
 }),
 // 订单中的商品
 order_item_Schema = new Schema({
