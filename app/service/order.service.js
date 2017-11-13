@@ -125,6 +125,10 @@ module.exports = {
 					order.status = false;
 					order.user   = user._id;
 					order.total  = total;
+					if(order.address.type == "Express Delivery (20 rmb delivery fee)") {
+						order.total  += 20;
+					}
+					
 					console.log(moment(), '下单金额：', order._id, order.total)
 					console.log('order', order)
 
