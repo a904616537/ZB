@@ -67,8 +67,8 @@ router.route('/download')
 
 		const filename = v.path.split('/').pop(),
 			suffix     = filename.split('.').pop(),
-			// url        = 'http://image.mybarrefitness.com/download';
-			url        = 'http://localhost:8082/download';
+			url        = 'http://image.mybarrefitness.com/download';
+			// url        = 'http://localhost:8082/download';
 		res.redirect(url + '?path=' + filename + '&name=' + v.name + '.' + suffix);
 	})
 	.catch(err => res.send({status : false, err}))
