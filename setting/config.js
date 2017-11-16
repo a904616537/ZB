@@ -102,7 +102,7 @@ const config = {
 				partnerKey : "f10059335d730b338b5b5a22e3c0df73",
 				appId      : "wx7a9163493d74be56",
 				mchId      : "1490453612",
-				notifyUrl  : "http://www.mybarrefitness.com/payment/notify",
+				notifyUrl  : "http://server.mybarrefitness.com/payment/notify",
 				pfx        : fs.readFileSync(rootPath + '/setting/apiclient_cert.p12')
 			}
 		}
