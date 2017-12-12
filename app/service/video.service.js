@@ -19,7 +19,7 @@ module.exports = {
 			let query = video_mongo.find({})
 			query.limit(size)
 			query.skip(start)
-			query.sort({order: 1, CreateTime : -1});
+			query.sort({courses : 1, CreateTime : -1, order: 1, });
 			if(sort && sort != '') {
 				sort = sort.split("|")
 				if(sort[1] == 'desc') sort = sort[0]
