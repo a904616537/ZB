@@ -65,20 +65,41 @@ module.exports = {
 				if(user.key == 'email') {
 					user_mongo.findOne({email : user.value}, (err, u) => {
 						if(u) return reject('The email has been registered!')
+						else {
+							doc[user.key] = user.value;
+							doc.save(err => {
+								if(err) {
+									console.log('error', doc);
+									return reject(err)
+								}
+								resolve(doc);
+							})
+						}
 					})
 				} else if(user.key == 'phone') {
 					user_mongo.findOne({email : user.value}, (err, u) => {
 						if(u) return reject('The phone has been registered!')
+						else {
+							doc[user.key] = user.value;
+							doc.save(err => {
+								if(err) {
+									console.log('error', doc);
+									return reject(err)
+								}
+								resolve(doc);
+							})
+						}
+					})
+				} else {
+					doc[user.key] = user.value;
+					doc.save(err => {
+						if(err) {
+							console.log('error', doc);
+							return reject(err)
+						}
+						resolve(doc);
 					})
 				}
-				doc[user.key] = user.value;
-				doc.save(err => {
-					if(err) {
-						console.log('error', doc);
-						return reject(err)
-					}
-					resolve(doc);
-				})
 			})
 		})
 	},
