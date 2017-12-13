@@ -36,6 +36,7 @@ module.exports = {
 		return new Promise((resolve, reject) => {
 			video_mongo.findById(video._id, (err, doc) => {
 				if (err) return reject(err);
+
 				doc[video.key] = video.value;
 				doc.save(err => {
 					console.log('error', doc);

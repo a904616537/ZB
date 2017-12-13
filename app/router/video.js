@@ -35,7 +35,7 @@ router.route('/')
 	const video = req.body;
 	service.Update(video)
 	.then(result => res.send({status : true}))
-	.catch(err => { 
+	.catch(err => {
 		console.error('err', err);
 		res.send({status : false})
 	})

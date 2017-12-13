@@ -57,6 +57,32 @@ module.exports = {
 		})
 	},
 
+	UpdateDetails(user) {
+		return new Promise((resolve, reject) => {
+			user_mongo.findById(user._id, (err, doc) => {
+				if (err) return reject(err);
+				// 如果修改的是phone或者email，需要先验证
+				if(user.key == 'email') {
+					user_mongo.findOne({email : user.value}, (err, u) => {
+						if(u) return reject('The email has been registered!')
+					})
+				} else if(user.key == 'phone') {
+					user_mongo.findOne({email : user.value}, (err, u) => {
+						if(u) return reject('The phone has been registered!')
+					})
+				}
+				doc[user.key] = user.value;
+				doc.save(err => {
+					if(err) {
+						console.log('error', doc);
+						return reject(err)
+					}
+					resolve(doc);
+				})
+			})
+		})
+	},
+
 	UpdatePwd(_id, pwd, newpwd) {
 		return new Promise((resolve, reject) => {
 			user_mongo.findOne({_id})

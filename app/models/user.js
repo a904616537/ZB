@@ -13,6 +13,7 @@ user_Schema = new Schema({
 	password       : String,
 	key            : String,	// 加密key
 	language       : String,
+	remark : String,	// 管理员备注
 	phone          : String,
 	email          : String,
 	address        : String,

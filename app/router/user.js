@@ -39,9 +39,14 @@ router.route('/user')
 })
 .put((req, res) => {
 	let { user_id, old_pwd, newpwd } = req.body;
-	console.log('put user', req.body)
-
 	service.UpdatePwd(user_id, old_pwd, newpwd)
+	.then(() => res.send({status : true}))
+	.catch(err => res.send({status : false, err}))
+})
+.post((req, res) => {
+	
+	const user = req.body;
+	service.UpdateDetails(user)
 	.then(() => res.send({status : true}))
 	.catch(err => res.send({status : false, err}))
 })
