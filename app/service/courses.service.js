@@ -125,14 +125,13 @@ module.exports = {
 				if (err) return reject(err);
 				// 获取报名
 				let index, item;
-				console.log('doc.sign_user', doc.sign_user)
-				item = doc.sign_user.find((val, key) => {
-					console.log(val._id.toString(), item_id.toString())
-					if(val._id.toString() == item_id.toString()) {
+				doc.sign_user.map((val, key) => {
+					console.log('val._id.toString() === item_id', val._id, item_id)
+					if(val._id.toString() === item_id) {
+						item = val;
 						index = key;
-						return true;
-					} else return false;
-				});
+					}
+				})
 				if(item) {
 					courses_mongo.findById(transfer, (err, courses_new) => {
 						if(courses_new) {
