@@ -4,11 +4,12 @@
 
 'use strict';
 
-const config = require('../../setting/config'),
-mongoose     = require('mongoose'),
-moment       = require('moment'),
+const config  = require('../../setting/config'),
+mongoose      = require('mongoose'),
+moment        = require('moment'),
+excel_help    = require('../helper/excel.help.js'),
 video_service = require('./video.service'),
-courses_mongo  = mongoose.model('courses');
+courses_mongo = mongoose.model('courses');
 
 
 module.exports = {
@@ -116,6 +117,42 @@ module.exports = {
 			})
 		})
 	},
+	// 转移报名到另一个课程
+	TransferApply(courses, transfer, item_id) {
+		console.log('courses', courses)
+		return new Promise((resolve, reject) => {
+			courses_mongo.findById(courses, (err, doc) => {
+				if (err) return reject(err);
+				// 获取报名
+				let index, item;
+				console.log('doc.sign_user', doc.sign_user)
+				item = doc.sign_user.find((val, key) => {
+					console.log(val._id.toString(), item_id.toString())
+					if(val._id.toString() == item_id.toString()) {
+						index = key;
+						return true;
+					} else return false;
+				});
+				if(item) {
+					courses_mongo.findById(transfer, (err, courses_new) => {
+						if(courses_new) {
+							delete item._id;
+							console.log('transfer item', item);
+							courses_new.sign_user.push(item);
+							courses_new.save(err => {
+								if(err) return reject(err)
+								resolve(courses_new);
+								doc.sign_user.splice(index, 1);
+								doc.save(err => {
+									if(err) console.log('delete sign_user item error', err);
+								})
+							})
+						} else reject();
+					})
+				} else reject();
+			})
+		})
+	},
 	// 移除用户报名
 	DeleteApply(courses, item_id) {
 		return new Promise((resolve, reject) => {
@@ -181,6 +218,60 @@ module.exports = {
 				})
 			})
 		})	
+	},
+	// 生成excel表格
+	toExcel(callback) {
+		courses_mongo.find({})
+		.populate({
+			path  : 'sign_user.user',
+			model : 'user'
+		})
+		.sort({order: 1, CreateTime : -1})
+		.exec((err, courses) => {
+			const cols = [
+				{caption: 'CreateTime', type:'string', width:10},
+				{caption: 'EndTime', type:'string', width:10},
+				{caption: 'Choreographies', type:'string', width:10},
+				{caption: 'Price', type:'string', width:10},
+				{caption: 'Limit', type:'string', width:10},
+				{caption: 'Location', type:'string', width:20},
+				{caption: 'Time', type:'string', width:20}
+			];
+			let excels = [];
+			for(let val of courses) {
+				const item = [
+					moment(val.CreateTime).format('YYYY-MM-DD hh:mm:ss'),
+					moment(val.endTime).format('YYYY-MM-DD hh:mm:ss'),
+					val.name,
+					val.price.toString(),
+					val.limit.toString(),
+					val.location,
+					val.time
+				];
+				excels.push(item)
+				// 报名增加
+				for(let sign of val.sign_user) {
+					const user = [
+						'',
+						'',
+						sign.user.first_name,
+						sign.user.last_name,
+						sign.user.phone,
+						sign.payment?"payment" : "not payment",
+						moment(sign.CreateTime).format('YYYY-MM-DD hh:mm:ss'),
+					];
+					excels.push(user)
+				}
+			}
+			console.log(excels)
+			excel_help.toExcel('Choreographies', cols, excels)
+			.then(url => {
+				callback(url);
+			})
+			.catch(err => {
+				callback('');
+			});	
+		})
 	}
 }
 

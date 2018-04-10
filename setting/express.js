@@ -67,7 +67,7 @@ module.exports = (app, config) => {
 
     app.use((req, res, next) => {
         const url = req._parsedUrl.pathname;
-        if (privateUrl.find(val => val == url)) {
+        if (privateUrl.find(val => val == url) > -1) {
             const token = req.headers.token;
 
             if (token && token != 'null') {

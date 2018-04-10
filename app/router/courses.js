@@ -63,6 +63,7 @@ router.route('/apply')
 	.then((result) => {res.send({status : true, data : result})})
 	.catch(err => {res.send({status : false})})
 })
+// 修改付款状态
 .put((req, res) => {
 	const {courses, item_id} = req.body;
 	service.EditApply(courses, item_id)
@@ -72,6 +73,14 @@ router.route('/apply')
 .delete((req, res) => {
 	const {courses, item_id} = req.body;
 	service.DeleteApply(courses, item_id)
+	.then((result) => {res.send({status : true, data : result})})
+	.catch(err => {res.send({status : false})})
+})
+
+router.route('/apply/transfer')
+.put((req, res) => {
+	const {courses, transfer_id, item_id} = req.body;
+	service.TransferApply(courses, transfer_id, item_id)
 	.then((result) => {res.send({status : true, data : result})})
 	.catch(err => {res.send({status : false})})
 })
@@ -86,6 +95,14 @@ router.route('/list/video/:level')
 	const {level} = req.params;
 	service.getAllVideo(level, coursess => {
 		res.send({status : true, data: coursess})
+	})
+})
+
+router.route('/download')
+.get((req, res) => {
+	service.toExcel(result => {
+		console.log('result', result)
+		res.send({result});
 	})
 })
 
