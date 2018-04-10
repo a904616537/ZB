@@ -35,7 +35,7 @@ module.exports = {
 			query.exec((err, courses) => {
 				courses = courses.map(val => {
 					let sign = val.sign_user.find(sign => sign.user._id == user)
-					if(sign) return {data : val, selected : true};
+					if(sign > -1) return {data : val, selected : true};
 					else return {data : val, selected : false};
 				})
 				return callback(courses, count)
