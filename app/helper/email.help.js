@@ -79,12 +79,28 @@ const template_email = (user, address, product_item) => {
 	+ str
 }
 
-const template = (user, email, password) => { return '<p>Dear '+ user.first_name + ' ' + user.last_name + '</p>'
-+'<p>Congratulations! You have now registered with MYbarre.</p>'
-+'<p>You can now revisit the MYbarrefitness website and click on the INSTRUCTOR LOGIN (top right of page) using the following password: '+password+'</p>'
-+'<p>If you have signed up for the Instructor Training course we will be in touch shortly with more specific information.</p>'
-+'<p>Kind regards,</p>'
-+'<p>MYbarre Fitness Team</p>';
+const template = (user, email, password) => { return '<p>Congratulations! Your MYbarre application has been approved.</p>\
+<p>Your password is: '+password+'</p>\
+<p>Next Steps:</p>\
+<p>1. Revisit the MYbarrefitness website</p>\
+<p>2. Click on ‘INSTRUCTOR LOGIN’ (top right of page)</p>\
+<p>3. Log in using your email address and the password above</p>\
+<p>4. Click on to ‘VIDEOS’</p>\
+<p>5. A QR code will appear (if you have not made payment yet)</p>\
+<p>6. Scan this with WeChat to make payment.</p>\
+<p>Once you have done this you will have access to the Pre-course Instructor Videos you should review and learn before the course.</p>\
+<p>We will be in touch soon with further information about your Instructor Training.</p>\
+<p>Kind regards,</p>\
+<p>MYbarre Fitness Team</p>';
+
+
+
+// 	'<p>Dear '+ user.first_name + ' ' + user.last_name + '</p>'
+// +'<p>Congratulations! You have now registered with MYbarre.</p>'
+// +'<p>You can now revisit the MYbarrefitness website and click on the INSTRUCTOR LOGIN (top right of page) using the following password: '+password+'</p>'
+// +'<p>If you have signed up for the Instructor Training course we will be in touch shortly with more specific information.</p>'
+// +'<p>Kind regards,</p>'
+// +'<p>MYbarre Fitness Team</p>';
 
 // 	'<p>Dear ' + user.first_name + '</p>'
 // + '<p>Congratulations, you have made the 1st step to becoming a MYbarre Instructor.  You have been accepted into the following training course:</p>'
