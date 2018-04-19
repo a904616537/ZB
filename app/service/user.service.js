@@ -56,6 +56,20 @@ module.exports = {
 			}
 		})
 	},
+	UpdateLevel(user_id, level) {
+		return new Promise((resolve, reject) => {
+			user_mongo.findOne({_id : user_id})
+			.exec((err, user) => {
+				if(user) {
+					user.level = level;
+					user.save(err => {
+						if(err) return reject(err)
+						resolve(user);
+					})
+				}
+			})
+		})
+	},
 
 	UpdateDetails(user) {
 		return new Promise((resolve, reject) => {

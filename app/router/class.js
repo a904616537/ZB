@@ -5,7 +5,7 @@
 'use strict';
 
 var express   = require('express'),
-service       = require('../service/courses.service'),
+service       = require('../service/class.service'),
 help          = require('../helper/page.help.js'),
 moment        = require('moment'),
 router        = express.Router();
@@ -17,12 +17,13 @@ router.route('/')
 	page     = parseInt(page);
 	per_page = parseInt(per_page);
 	service.getList(user, page, per_page, sort, (coursess, count) => {
-		let { total, last_page, next_page_url, prev_page_url} = help.calculate(page, per_page, count, '/courses?query=' + query);
+		let { total, last_page, next_page_url, prev_page_url} = help.calculate(page, per_page, count, '/class?query=' + query);
 		res.send({data: coursess, current_page: page, total, per_page, last_page, next_page_url, prev_page_url })
 	})
 })
 .post((req, res) => {
 	const courses = req.body;
+	console.log('courses', courses)
 	service.Inset(courses)
 	.then(result => res.send({status : true}))
 	.catch(err => { 
@@ -32,6 +33,9 @@ router.route('/')
 })
 .put((req, res) => {
 	const courses = req.body;
+	if(typeof courses.courses == 'string') courses.courses = [courses.courses];
+
+	console.log('courses', courses)
 	service.Update(courses)
 	.then(result => res.send({status : true}))
 	.catch(err => { 
@@ -88,14 +92,6 @@ router.route('/list')
 	service.getAll(coursess => res.send({data: coursess}))
 })
 
-router.route('/list/video/:level/:user')
-.get((req, res) => {
-	const {level, user} = req.params;
-	service.getAllVideo(level, user, coursess => {
-		res.send({status : true, data: coursess})
-	})
-})
-
 router.route('/download')
 .get((req, res) => {
 	service.toExcel(result => {
@@ -105,5 +101,5 @@ router.route('/download')
 })
 
 module.exports = app => {
-	app.use('/courses', router);
+	app.use('/class', router);
 }

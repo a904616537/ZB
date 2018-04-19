@@ -92,7 +92,6 @@ router.route('/user/payment')
 	.catch(err => res.send({status: false}))
 })
 
-
 router.route('/login')
 .post((req, res) => {
 	const query = req.body;
