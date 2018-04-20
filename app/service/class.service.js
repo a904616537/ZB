@@ -250,32 +250,48 @@ module.exports = {
 				{caption: 'Price', type:'string', width:10},
 				{caption: 'Limit', type:'string', width:10},
 				{caption: 'Location', type:'string', width:20},
-				{caption: 'Time', type:'string', width:20}
+				{caption: 'Time', type:'string', width:20},
+				{caption: 'First Name', type:'string', width:20},
+				{caption: 'Last Name', type:'string', width:20},
+				{caption: 'Phone Number', type:'string', width:20},
+				{caption: 'Member Status', type:'string', width:20},	// 成员的等级
+				{caption: 'Course Fee Paid (Yes/No)', type:'string', width:20},	// 课程是否支付
+				{caption: 'Course Fee Paid（time）', type:'string', width:20},	// 课程支付时间
 			];
+			const levelToString = (level) => {
+				switch(level) {
+					case 0:
+					return 'Public Availability';
+					case 1:
+					return 'Pre Course Instructor';
+					case 2:
+					return 'Instructor in Training';
+					case 3:
+					return 'MBI (MYbarre Instructor)';
+					case 4:
+					return 'MBI Elite/MBI Master';
+				}
+			}
 			let excels = [];
 			for(let val of courses) {
-				const item = [
-					moment(val.CreateTime).format('YYYY-MM-DD hh:mm:ss'),
-					moment(val.endTime).format('YYYY-MM-DD hh:mm:ss'),
-					val.name,
-					val.price.toString(),
-					val.limit.toString(),
-					val.location,
-					val.time
-				];
-				excels.push(item)
 				// 报名增加
 				for(let sign of val.sign_user) {
-					const user = [
-						'',
-						'',
+					const item = [
+						moment(val.CreateTime).format('YYYY-MM-DD hh:mm:ss'),
+						moment(val.endTime).format('YYYY-MM-DD hh:mm:ss'),
+						val.name,
+						val.price.toString(),
+						val.limit.toString(),
+						val.location,
+						val.time,
 						sign.user.first_name,
 						sign.user.last_name,
 						sign.user.phone,
-						sign.payment?"payment" : "not payment",
+						levelToString(sign.user.level),
+						sign.payment?"Yes" : "No",
 						moment(sign.CreateTime).format('YYYY-MM-DD hh:mm:ss'),
 					];
-					excels.push(user)
+					excels.push(item)
 				}
 			}
 			console.log(excels)
