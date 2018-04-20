@@ -254,6 +254,7 @@ module.exports = {
 				{caption: 'First Name', type:'string', width:20},
 				{caption: 'Last Name', type:'string', width:20},
 				{caption: 'Phone Number', type:'string', width:20},
+				{caption: 'Email', type:'string', width:20},
 				{caption: 'Member Status', type:'string', width:20},	// 成员的等级
 				{caption: 'Course Fee Paid (Yes/No)', type:'string', width:20},	// 课程是否支付
 				{caption: 'Course Fee Paid（time）', type:'string', width:20},	// 课程支付时间
@@ -287,6 +288,7 @@ module.exports = {
 						sign.user.first_name,
 						sign.user.last_name,
 						sign.user.phone,
+						sign.user.email,
 						levelToString(sign.user.level),
 						sign.payment?"Yes" : "No",
 						moment(sign.CreateTime).format('YYYY-MM-DD hh:mm:ss'),
