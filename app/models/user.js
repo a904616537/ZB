@@ -45,6 +45,7 @@ user_Schema = new Schema({
 	audit      : { type : Boolean, default : false },	// 审核
 	msgNum     : { type : Number, default : 1}, 		// 通知次数
 	is_payment : { type : Boolean, default : false },	//付钱了没
+	del        : {type : Boolean, default: false},		// 移除用户
 	CreateTime : { type : Date, default : Date.now }
 });
 
@@ -54,7 +55,7 @@ user_Schema.virtual('date').get(() => {
 
 user_Schema.statics = {
 	findById(_id, callback) {
-		this.findOne({_id})
+		this.findOne({_id, del : {$ne : true}})
 		.select({
 			password : 0,
 			key      : 0
@@ -62,7 +63,7 @@ user_Schema.statics = {
 		.exec(callback);
 	},
 	findByUser(select, callback) {
-		this.findOne({})
+		this.findOne({del : {$ne : true}})
 		.or([
 			{'phone': { $in: select }},
 			{'email': { $in: select }}

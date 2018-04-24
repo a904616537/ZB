@@ -15,7 +15,7 @@ dateTime     = require('../helper/dateTime');
 
 module.exports = {
 	getUserById(user_id, callback) {
-		user_mongo.findOne({_id : user_id})
+		user_mongo.findOne({_id : user_id, del : {$ne : true}})
 		.select({
 			password : 0,
 			key      : 0
@@ -24,10 +24,10 @@ module.exports = {
 	},
 	// 获取用户
 	getUser(page = 1, size = 1, sort = 'subscribe_time|asc', callback) {
-		user_mongo.count({})
+		user_mongo.count({$ne : {del : true}})
 		.exec((err, count) => {
 			let start = (page - 1) * size;
-			let query = user_mongo.find({})
+			let query = user_mongo.find({del : {$ne : true}})
 			query.limit(size)
 			query.skip(start)
 			query.populate({
@@ -58,7 +58,7 @@ module.exports = {
 	},
 	UpdateLevel(user_id, level) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({_id : user_id})
+			user_mongo.findOne({_id : user_id, del : {$ne : true}})
 			.exec((err, user) => {
 				if(user) {
 					user.level = level;
@@ -77,7 +77,7 @@ module.exports = {
 				if (err) return reject(err);
 				// 如果修改的是phone或者email，需要先验证
 				if(user.key == 'email') {
-					user_mongo.findOne({email : user.value}, (err, u) => {
+					user_mongo.findOne({email : user.value, del : {$ne : true}}, (err, u) => {
 						if(u) return reject('The email has been registered!')
 						else {
 							doc[user.key] = user.value;
@@ -91,7 +91,7 @@ module.exports = {
 						}
 					})
 				} else if(user.key == 'phone') {
-					user_mongo.findOne({email : user.value}, (err, u) => {
+					user_mongo.findOne({email : user.value, del : {$ne : true}}, (err, u) => {
 						if(u) return reject('The phone has been registered!')
 						else {
 							doc[user.key] = user.value;
@@ -120,7 +120,7 @@ module.exports = {
 
 	UpdatePwd(_id, pwd, newpwd) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({_id})
+			user_mongo.findOne({_id, del : {$ne : true}})
 			.exec((err, user) => {
 				if(user) {
 					// 验证密码
@@ -145,7 +145,7 @@ module.exports = {
 	},
 	UpdatePayment(_id, is_payment) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({_id})
+			user_mongo.findOne({_id, del : {$ne : true}})
 			.exec((err, user) => {
 				if(user) {
 					user.is_payment = is_payment;
@@ -160,7 +160,7 @@ module.exports = {
 
 	SelectById(_id) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({_id})
+			user_mongo.findOne({_id, del : {$ne : true}})
 			.select({
 				password : 0,
 				key      : 0
@@ -188,7 +188,7 @@ module.exports = {
 	},
 	setUserVideo(user_id, video_id) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({_id : user_id})
+			user_mongo.findOne({_id : user_id, del : {$ne : true}})
 			.exec((err, user) => {
 				if (err) return reject(err);
 				const video = user.videos.find(v => v.toString() == video_id.toString());
@@ -230,10 +230,26 @@ module.exports = {
 			})
 		})
 	},
+	Delete(_id) {
+		return new Promise((resolve, reject) => {
+			user_mongo.findOne({_id, del : {$ne : true}})
+			.exec((err, user) => {
+
+				console.log('err', err)
+				if(user) {
+					user.del = true;
+					user.save(err => {
+						if(err) reject(err)
+						else resolve();
+					})
+				} else reject("Users don't exist!")
+			})
+		})
+	},
 	// 审核并发送邮件
 	Audit(_id, audit) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({_id})
+			user_mongo.findOne({_id, del : {$ne : true}})
 			.exec((err, user) => {
 				if(audit) {
 					let password = '';

@@ -44,9 +44,15 @@ router.route('/user')
 	.catch(err => res.send({status : false, err}))
 })
 .post((req, res) => {
-	
 	const user = req.body;
 	service.UpdateDetails(user)
+	.then(() => res.send({status : true}))
+	.catch(err => res.send({status : false, err}))
+})
+.delete((req, res) => {
+	const user = req.query.user;
+	console.log('user', user)
+	service.Delete(user)
 	.then(() => res.send({status : true}))
 	.catch(err => res.send({status : false, err}))
 })
