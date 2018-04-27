@@ -45,6 +45,7 @@ router.route('/user')
 })
 .post((req, res) => {
 	const user = req.body;
+	console.log('user', user);
 	service.UpdateDetails(user)
 	.then(() => res.send({status : true}))
 	.catch(err => res.send({status : false, err}))

@@ -246,7 +246,7 @@ module.exports = {
 			const cols = [
 				{caption: 'CreateTime', type:'string', width:10},
 				{caption: 'EndTime', type:'string', width:10},
-				{caption: 'Class Name', type:'string', width:10},
+				{caption: 'Course Name', type:'string', width:10},
 				{caption: 'Price', type:'string', width:10},
 				{caption: 'Limit', type:'string', width:10},
 				{caption: 'Location', type:'string', width:20},
