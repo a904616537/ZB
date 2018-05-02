@@ -36,7 +36,7 @@ module.exports = {
 				result = result.map(val => {
 					let sign;
 					for(let item of val.sign_user) {
-						if(item.user._id == user) {
+						if(item.user && item.user._id == user) {
 							sign = item;
 						}
 					}
