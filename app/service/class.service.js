@@ -261,14 +261,12 @@ module.exports = {
 			const levelToString = (level) => {
 				switch(level) {
 					case 0:
-					return 'Public Availability';
-					case 1:
 					return 'Pre Course Instructor';
-					case 2:
+					case 1:
 					return 'Instructor in Training';
-					case 3:
+					case 2:
 					return 'MBI (MYbarre Instructor)';
-					case 4:
+					case 3:
 					return 'MBI Elite/MBI Master';
 				}
 			}
