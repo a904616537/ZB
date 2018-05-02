@@ -27,6 +27,9 @@ const io         = socket(httpServer);
 
 global.socket = io;
 
+io.on('connection', function (socket) {
+	console.log('socket', 1)
+});
 
 // 应用程序加载
 require('./setting/express')(app, config);

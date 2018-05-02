@@ -65,6 +65,11 @@ module.exports = {
 					user.save(err => {
 						if(err) return reject(err)
 						resolve(user);
+
+						socket.emit('user-level', {
+							status : true,
+							level  : level
+						})
 					})
 				}
 			})

@@ -71,15 +71,9 @@ router.route('/user/level/:_id')
 })
 .put((req, res) => {
 	const {_id, level} = req.body;
-	service.SelectById(_id)
-	.then(user => {
-		if(user) {
-			user.level = level;
-			service.Update(user)
-			.then(user => res.send({status : true, user}))
-			.catch(err => res.send({status: false}))
-		} else res.send({status: false})
-	})
+
+	service.UpdateLevel(_id, level)
+	.then(user => res.send({status : true, user}))
 	.catch(err => res.send({status: false}))
 })
 
