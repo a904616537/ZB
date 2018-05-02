@@ -103,7 +103,7 @@ module.exports = {
 						resolve({_id, item_id : item._id});
 					})
 
-					user_service.UpdateLevel(user, doc.level)
+					user_service.UpdateLevel(user, 1)
 					.then(result => console.log('修改用户权限！', user, doc.level))
 					.catch(err => console.log('修改用户权限失败！', user, doc.level))
 				} else reject()
