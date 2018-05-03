@@ -54,7 +54,7 @@ module.exports = {
 			path  : 'sign_user.user',
 			model : 'user'
 		})
-		.sort({order : 1, CreateTime : -1})
+		.sort({order : 1, CreateTime : 1})
 		.exec((err, doc) => callback(doc))
 	},
 
