@@ -79,19 +79,38 @@ const template_email = (user, address, product_item) => {
 	+ str
 }
 
-const template = (user, email, password) => { return '<p>Congratulations! Your MYbarre application has been approved.</p>\
-<p>Your password is: '+password+'</p>\
-<p>Next Steps:</p>\
-<p>1. Revisit the MYbarrefitness website</p>\
-<p>2. Click on ‘INSTRUCTOR LOGIN’ (top right of page)</p>\
-<p>3. Log in using your email address and the password above</p>\
-<p>4. Click on to ‘VIDEOS’</p>\
-<p>5. A QR code will appear (if you have not made payment yet)</p>\
-<p>6. Scan this with WeChat to make payment.</p>\
-<p>Once you have done this you will have access to the Pre-course Instructor Videos you should review and learn before the course.</p>\
-<p>We will be in touch soon with further information about your Instructor Training.</p>\
-<p>Kind regards,</p>\
-<p>MYbarre Fitness Team</p>';
+const template = (user, email, password) => { return 
+
+`Dear ${user.first_name} ${user.last_name}\
+Thank you for your application to the MYbarre Instructor Training. To finish your registration you must complete the following steps within the next 24 hours to secure your space.\
+Your password is ${password}\
+1. Revisit the MYbarrefitness website \
+2. Click on ‘INSTRUCTOR LOGIN’ (top right of page) \
+3. Log in using your email address and the password above\
+4. Click ‘Select & Pay’ on the profile screen\
+5. You will be redirected to the training schedule.  Click 'register' to the date of the course you want to attend\
+6. A QR code will appear, scan with your WeChat and make payment.\
+Once you have done this you will have access to the Pre-course Instructor Videos. You must review and learn the content before the course.\
+If you do not complete these steps within 24 hours you will have to start the application process again.\
+We will be in touch nearer the training date with further information about your Instructor Training.\
+Kind regards,\
+MYbarre Fitness Team`;
+
+
+
+// '<p>Congratulations! Your MYbarre application has been approved.</p>\
+// <p>Your password is: '+password+'</p>\
+// <p>Next Steps:</p>\
+// <p>1. Revisit the MYbarrefitness website</p>\
+// <p>2. Click on ‘INSTRUCTOR LOGIN’ (top right of page)</p>\
+// <p>3. Log in using your email address and the password above</p>\
+// <p>4. Click on to ‘VIDEOS’</p>\
+// <p>5. A QR code will appear (if you have not made payment yet)</p>\
+// <p>6. Scan this with WeChat to make payment.</p>\
+// <p>Once you have done this you will have access to the Pre-course Instructor Videos you should review and learn before the course.</p>\
+// <p>We will be in touch soon with further information about your Instructor Training.</p>\
+// <p>Kind regards,</p>\
+// <p>MYbarre Fitness Team</p>';
 
 
 
