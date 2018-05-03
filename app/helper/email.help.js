@@ -81,9 +81,9 @@ const template_email = (user, address, product_item) => {
 
 const template = (user, email, password) => { return 
 
-`Dear ${user.first_name} ${user.last_name}\
+"Dear "+user.first_name+" "+user.last_name+"\
 Thank you for your application to the MYbarre Instructor Training. To finish your registration you must complete the following steps within the next 24 hours to secure your space.\
-Your password is ${password}\
+Your password is "+password+"\
 1. Revisit the MYbarrefitness website \
 2. Click on ‘INSTRUCTOR LOGIN’ (top right of page) \
 3. Log in using your email address and the password above\
@@ -94,7 +94,7 @@ Once you have done this you will have access to the Pre-course Instructor Videos
 If you do not complete these steps within 24 hours you will have to start the application process again.\
 We will be in touch nearer the training date with further information about your Instructor Training.\
 Kind regards,\
-MYbarre Fitness Team`;
+MYbarre Fitness Team";
 
 
 
