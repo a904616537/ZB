@@ -102,11 +102,23 @@ router.route('/login')
 		user.key         = '';
 		user.password    = '';
 		const expires = moment().minutes(1).valueOf();
+		const model = {
+				first_name : user.first_name,
+				last_name  : user.last_name,
+				phone      : user.phone,
+				email      : user.email,
+				wechatid   : user.wechatid,
+				address    : user.address,
+				city       : user.city,
+				level      : user.level,
+				is_payment : user.is_payment,
+				CreateTime : user.CreateTime
+		}
 		const token = jwt.encode({
-			iss : user,
+			iss : model,
 			exp : expires
 		}, 'ZB');
-		res.send({status: true, token, expires, user})
+		res.send({status: true, token, expires, user : model})
 	})
 	.catch(err => res.send({status: false}))
 })
