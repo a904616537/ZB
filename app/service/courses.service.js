@@ -52,7 +52,7 @@ module.exports = {
 	getAllVideo(level, user, callback) {
 		class_service.getUserClass(user, (result) => {
 			console.log('result', result)
-			courses_mongo.find({_id : {$in : result}})
+			courses_mongo.find({})
 			.sort({order : 1, CreateTime : -1})
 			.exec((err, doc) => {
 				video_service.getForLevel(level, videos => {
