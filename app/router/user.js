@@ -127,7 +127,7 @@ router.route('/login')
 // 注册
 router.route('/register')
 .post((req, res) => {
-	console.log('req.body', req.body)
+	req.body.language = req.body.lang;
 	const user = req.body;
 	service.Register(user)
 	.then(result => res.send({status : true}))
