@@ -98,6 +98,11 @@ router.route('/login')
 	const query = req.body;
 	service.SelectUser(query)
 	.then(user => {
+		// 账户被锁定
+		if(user.locking) {
+			res.send({status: false, locking : true});
+			return;
+		}
 
 		user.key         = '';
 		user.password    = '';

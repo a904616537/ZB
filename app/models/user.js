@@ -52,7 +52,8 @@ user_Schema = new Schema({
 	audit      : { type : Boolean, default : false },	// 审核
 	msgNum     : { type : Number, default : 1}, 		// 通知次数
 	is_payment : { type : Boolean, default : false },	//付钱了没
-	del        : {type : Boolean, default: false},		// 移除用户
+	del        : { type : Boolean, default: false},		// 移除用户
+	locking    : { type : Boolean, default : false},	// 锁定账户
 	CreateTime : { type : Date, default : Date.now }
 });
 
