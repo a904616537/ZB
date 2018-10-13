@@ -178,11 +178,10 @@ module.exports = {
 	},
 	SelectUser(query) {
 		return new Promise((resolve, reject) => {
-			console.log([query.key])
 			user_mongo.findByUser([query.key], (err, user) => {
 				if (err) return reject(err);
 				if(user) {
-					return resolve(user)
+					// return resolve(user)
 					// 解密
 					encryption.decipher(user.password, user.key, pwd => {
 						if(pwd == query.password) return resolve(user)

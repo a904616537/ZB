@@ -48,12 +48,11 @@ user_Schema = new Schema({
 	high_blood       : String,
 	
 	videos     : [{type : Schema.Types.ObjectId, ref : 'video'}],	// 下载视频记录
-	level      : { type : Number, min : 0, default : 0 },
+	level      : { type : Number, default : 0 },
 	audit      : { type : Boolean, default : false },	// 审核
 	msgNum     : { type : Number, default : 1}, 		// 通知次数
 	is_payment : { type : Boolean, default : false },	//付钱了没
 	del        : { type : Boolean, default: false},		// 移除用户
-	locking    : { type : Boolean, default : false},	// 锁定账户
 	CreateTime : { type : Date, default : Date.now }
 });
 

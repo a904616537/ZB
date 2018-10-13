@@ -99,7 +99,7 @@ router.route('/login')
 	service.SelectUser(query)
 	.then(user => {
 		// 账户被锁定
-		if(user.locking) {
+		if(user.level < 0) {
 			res.send({status: false, locking : true});
 			return;
 		}
