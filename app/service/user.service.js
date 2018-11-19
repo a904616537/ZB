@@ -61,6 +61,7 @@ module.exports = {
 			user_mongo.findOne({_id : user_id, del : {$ne : true}})
 			.exec((err, user) => {
 				if(user) {
+					if(user.level > 1) resolve(user);
 					user.level = level;
 					user.save(err => {
 						if(err) return reject(err)
