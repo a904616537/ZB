@@ -43,6 +43,7 @@ router.route('/')
 	const { product_id, number, user } = req.body;
 	service.getCart(user)
 	.then(cart => {
+		console.log('get Cart', cart);
 		let cart_item = cart.cart_item.find(value => {
 			if(value.product) return value.product._id == product_id;
 			else return false;
